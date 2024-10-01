@@ -113,7 +113,7 @@ class _UserRegisterState extends State<UserRegister> {
                   obscureText: true, // To hide the confirm password input
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
-                    hintText: ' Confirm ',
+                    hintText: ' Confirm Password',
                     border: OutlineInputBorder(
                       borderSide: BorderSide(width: 1),
                       borderRadius: BorderRadius.circular(20),
