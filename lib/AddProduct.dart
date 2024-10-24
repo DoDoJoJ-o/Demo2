@@ -73,7 +73,7 @@ class _AddProductState extends State<AddProduct> {
                   expands: true, // ขยายเต็มพื้นที่ในแนวตั้ง
                 ),
               ),
-               SizedBox(height: 25),
+              SizedBox(height: 25),
               SizedBox(
                 width: 320,
                 height: 75,
@@ -102,26 +102,53 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
               SizedBox(height: 25),
-              SizedBox(
-                width: 250,
-                height: 60,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 82, 219, 87),
-                  ),
-                  onPressed: () {
-                    // Handle button press
-                  },
-                  child: const Text(
-                    "Send",
-                    style: TextStyle(
-                      fontSize: 34,
-                      color: Color.fromARGB(255, 252, 250, 250),
-                      fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 250,
+                    height: 60,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 82, 219, 87),
+                      ),
+                      onPressed: () {
+                        // Handle button press
+                      },
+                      child: const Text(
+                        "Send",
+                        style: TextStyle(
+                          fontSize: 34,
+                          color: Color.fromARGB(255, 252, 250, 250),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                  SizedBox(width: 50), // ระยะห่างระหว่างปุ่ม
+                  Container(
+                    width: 60, // ขนาดเส้นผ่าศูนย์กลางของวงกลม
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Color.fromARGB(255, 0, 0, 0), // สีขอบวงกลม
+                        width: 5, // ความหนาของขอบ
+                      ),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.close, // เปลี่ยนเป็นกากบาท
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        // Handle close button press
+                      },
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

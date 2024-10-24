@@ -30,6 +30,17 @@ class _UserRegisterState extends State<UserRegister> {
                   color: Colors.black,
                 ),
               ),
+               const SizedBox(height: 20), // ระยะห่างระหว่าง TextField กับไอคอน
+              IconButton(
+                icon: Icon(Icons.add_a_photo), // เปลี่ยนเป็นไอคอนเพิ่มรูป
+                iconSize: 80,
+                onPressed: () {
+                  // โค้ดสำหรับการถ่ายรูปหรือเลือกภาพจากมือถือ
+                  // ตัวอย่างเช่น เปิดกล้องหรือไดอัลล็อกไฟล์
+                },
+              ),
+
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.start, // เริ่มต้นที่ซ้าย
                 children: [
@@ -127,7 +138,7 @@ class _UserRegisterState extends State<UserRegister> {
                 height: 60,
                 child: TextField(
                   decoration: InputDecoration(
-                    //prefixIcon: Icon(Icons.location_city),
+                    prefixIcon: Icon(Icons.location_on),
                     hintText: ' Address',
                     border: OutlineInputBorder(
                       borderSide: BorderSide(width: 1),

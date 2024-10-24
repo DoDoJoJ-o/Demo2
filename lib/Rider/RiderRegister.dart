@@ -30,6 +30,17 @@ class _RiderRegisterState extends State<RiderRegister> {
                   color: Colors.black,
                 ),
               ),
+              const SizedBox(height: 20), // ระยะห่างระหว่าง TextField กับไอคอน
+              IconButton(
+                icon: Icon(Icons.add_a_photo), // เปลี่ยนเป็นไอคอนเพิ่มรูป
+                iconSize: 80,
+                onPressed: () {
+                  // โค้ดสำหรับการถ่ายรูปหรือเลือกภาพจากมือถือ
+                  // ตัวอย่างเช่น เปิดกล้องหรือไดอัลล็อกไฟล์
+                },
+              ),
+
+              
               Row(
                 mainAxisAlignment:
                     MainAxisAlignment.start, // เปลี่ยนให้เริ่มต้นที่ซ้าย
@@ -127,7 +138,8 @@ class _RiderRegisterState extends State<RiderRegister> {
                 height: 60,
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: ' Address',
+                    prefixIcon: Icon(Icons.delivery_dining),
+                    hintText: ' License Plate',
                     border: OutlineInputBorder(
                       borderSide: BorderSide(width: 1),
                       borderRadius: BorderRadius.circular(20),

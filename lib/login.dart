@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Rider/HomeRider.dart';
 import 'package:flutter_application_1/User/UserRegister.dart';
 import 'package:flutter_application_1/Home.dart';
 import 'package:get/get.dart';
@@ -78,7 +79,7 @@ class Login extends StatelessWidget {
                 height: 60,
                 child: FilledButton(
                   onPressed: () {
-                    Get.to(() => const Homepage());
+                    Get.to(() => const HomeRider());
                   },
                   child: const Text(
                     "LOGIN",
