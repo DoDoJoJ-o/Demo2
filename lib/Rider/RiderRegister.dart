@@ -92,7 +92,7 @@ class _RiderRegisterState extends State<RiderRegister> {
                 height: 60,
                 child: TextField(
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
+                    
                     hintText: ' Username',
                     border: OutlineInputBorder(
                       borderSide: BorderSide(width: 1),
