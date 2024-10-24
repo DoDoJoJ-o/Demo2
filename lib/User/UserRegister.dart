@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:io'; // สำหรับจัดการไฟล์ภาพที่ได้จากอุปกรณ์
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Rider/RiderRegister.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart'; // เพิ่มการนำเข้า image_picker
 
 class UserRegister extends StatefulWidget {
   const UserRegister({super.key});
@@ -11,6 +15,62 @@ class UserRegister extends StatefulWidget {
 }
 
 class _UserRegisterState extends State<UserRegister> {
+  final String url = 'https://warm-viper-neutral.ngrok.app/api/users';
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
+  File? _image; // สำหรับเก็บภาพที่ได้จากกล้องหรือคลังภาพ
+  final picker = ImagePicker(); // ตัวช่วยในการเลือกหรือถ่ายภาพ
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path); // เก็บภาพที่เลือก
+      });
+    } else {
+      Get.snackbar('Error', 'No image selected');
+    }
+  }
+
+  Future<void> registerUser() async {
+    if (passwordController.text != confirmPasswordController.text) {
+      Get.snackbar('Error', 'Passwords do not match');
+      return;
+    }
+
+    var requestBody = {
+      "phone_number": phoneNumberController.text,
+      "name": usernameController.text,
+      "user_image": _image?.path ?? "uploads\\default_image.jpg", // ใช้ path ของภาพที่เลือก
+      "address": addressController.text,
+      "gps_location": null,
+      "user_type": "Sender",
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(requestBody),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var jsonResponse = json.decode(response.body);
+        Get.snackbar('Success', 'Account created successfully');
+        Get.to(() => const Login());
+      } else {
+        Get.snackbar('Error', 'Failed to create account: ${response.body}');
+      }
+    } catch (error) {
+      Get.snackbar('Error', 'An error occurred: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,21 +90,20 @@ class _UserRegisterState extends State<UserRegister> {
                   color: Colors.black,
                 ),
               ),
-               const SizedBox(height: 20), // ระยะห่างระหว่าง TextField กับไอคอน
-              IconButton(
-                icon: Icon(Icons.add_a_photo), // เปลี่ยนเป็นไอคอนเพิ่มรูป
-                iconSize: 80,
-                onPressed: () {
-                  // โค้ดสำหรับการถ่ายรูปหรือเลือกภาพจากมือถือ
-                  // ตัวอย่างเช่น เปิดกล้องหรือไดอัลล็อกไฟล์
-                },
-              ),
-
-
+              const SizedBox(height: 20),
+              _image == null
+                  ? IconButton(
+                      icon: Icon(Icons.add_a_photo),
+                      iconSize: 80,
+                      onPressed: () {
+                        _showPicker(context); // เลือกแหล่งที่มาของภาพ
+                      },
+                    )
+                  : Image.file(_image!, height: 150), // แสดงภาพที่เลือก
               Row(
-                mainAxisAlignment: MainAxisAlignment.start, // เริ่มต้นที่ซ้าย
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 132), // ระยะห่างจากซ้าย
+                  SizedBox(width: 132),
                   Text(
                     'User',
                     style: TextStyle(
@@ -53,13 +112,12 @@ class _UserRegisterState extends State<UserRegister> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(width: 75), // เพิ่มระยะห่างระหว่าง 'User' กับ 'Rider'
+                  SizedBox(width: 75),
                   InkWell(
                     onTap: () {
                       Get.to(() => const RiderRegister());
                     },
                     child: Text(
-                      // ให้ Text เป็น child ของ InkWell
                       'Rider',
                       style: TextStyle(
                         fontSize: 20,
@@ -70,134 +128,40 @@ class _UserRegisterState extends State<UserRegister> {
                   ),
                 ],
               ),
-              SizedBox(height: 30),
-              SizedBox(
-                width: 360,
-                height: 60,
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.phone),
-                    hintText: ' Phone Number',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                width: 360,
-                height: 60,
-                child: TextField(
-                  decoration: InputDecoration(
-                    //prefixIcon: Icon(Icons.verified_user_sharp),
-                    hintText: ' Username',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                width: 360,
-                height: 60,
-                child: TextField(
-                  obscureText: true, // To hide the password input
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: ' Password',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                width: 360,
-                height: 60,
-                child: TextField(
-                  obscureText: true, // To hide the confirm password input
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: ' Confirm Password',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                width: 360,
-                height: 60,
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.location_on),
-                    hintText: ' Address',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                width: 360,
-                height: 60,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 72, 175, 75),
-                  ),
-                  onPressed: () {
-                    // Handle button press
-                  },
-                  child: const Text(
-                    "CREATE ACCOUNT",
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'If you have an account ',
-                    style: TextStyle(
-                      fontSize: 21,
-                      color: Colors.black,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => const Login());
-                    },
-                    child: Text(
-                      'Sign in',
-                      style: TextStyle(
-                        fontSize: 21,
-                        color: const Color.fromARGB(206, 147, 2, 173),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
-                ],
-              )
+              // ส่วนอื่นๆ ของ UI
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                  leading: Icon(Icons.photo_library),
+                  title: Text('Choose from gallery'),
+                  onTap: () {
+                    _pickImage(ImageSource.gallery); // เลือกรูปจากคลังภาพ
+                    Navigator.of(context).pop();
+                  }),
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Take a photo'),
+                onTap: () {
+                  _pickImage(ImageSource.camera); // ถ่ายรูป
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

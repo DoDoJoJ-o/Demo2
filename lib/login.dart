@@ -79,7 +79,7 @@ class Login extends StatelessWidget {
                 height: 60,
                 child: FilledButton(
                   onPressed: () {
-                    Get.to(() => const HomeRider());
+                    Get.to(() => const Homepage());
                   },
                   child: const Text(
                     "LOGIN",
