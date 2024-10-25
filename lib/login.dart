@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Rider/HomeRider.dart';
-import 'package:flutter_application_1/User/UserRegister.dart';
 import 'package:flutter_application_1/Home.dart';
+import 'package:flutter_application_1/User/UserRegister.dart';
 import 'package:get/get.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("Login")),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.only(top: 50),
+          padding: EdgeInsets.only(top: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 50),
               Text(
                 'Login',
                 style: TextStyle(
@@ -26,30 +31,33 @@ class Login extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 20),
+              SizedBox(height: 30),
               Text(
-                'By signing in you are agreeing to our',
+                'By signing in you are agreeing ',
                 style: TextStyle(
                   fontSize: 21,
+                  fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
               SizedBox(height: 0),
               Text(
-                '  Terms and Privacy Policy  ',
+                'Term and privacy policy ',
                 style: TextStyle(
                   fontSize: 21,
-                  color: Color.fromARGB(255, 47, 139, 50),
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 42, 212, 50),
                 ),
               ),
-              SizedBox(height: 55),
+              SizedBox(height: 80),
               SizedBox(
                 width: 360,
                 height: 60,
                 child: TextField(
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.phone),
-                    hintText: ' Phone Number',
+                    hintText: 'Phone Number',
                     border: OutlineInputBorder(
                       borderSide: BorderSide(width: 1),
                       borderRadius: BorderRadius.circular(20),
@@ -57,37 +65,48 @@ class Login extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 35),
+              SizedBox(height: 30),
               SizedBox(
                 width: 360,
                 height: 60,
                 child: TextField(
+                  obscureText: true,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
-                    hintText: ' Password',
+                    hintText: 'Password',
                     border: OutlineInputBorder(
                       borderSide: BorderSide(width: 1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  obscureText: true, // For password field
                 ),
               ),
-              SizedBox(height: 45),
+              SizedBox(height: 30),
+
+              // Login Button
               SizedBox(
                 width: 360,
                 height: 60,
-                child: FilledButton(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 72, 175, 75),
+                  ),
                   onPressed: () {
-                    Get.to(() => const Homepage());
+                    Get.to(() => const HomePage()); // Navigate to home screen
                   },
                   child: const Text(
                     "LOGIN",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 50),
+
+              // Register Now section
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -100,7 +119,7 @@ class Login extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.to(() => const UserRegister());
+                      Get.to(() => const UserRegister()); // Navigate to registration screen
                     },
                     child: Text(
                       'Register Now',
@@ -112,7 +131,7 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              )
             ],
           ),
         ),

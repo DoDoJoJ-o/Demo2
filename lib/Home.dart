@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AddProduct.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +31,7 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
             ),
-            SizedBox(height: 300),
+            SizedBox(height: 280),
             Center(
               child: Column(
                 children: [
@@ -53,7 +52,7 @@ class _HomepageState extends State<Homepage> {
                 ],
               ),
             ),
-            SizedBox(height: 383),
+            SizedBox(height: 318),
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -68,14 +67,26 @@ class _HomepageState extends State<Homepage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 50),
-                      child: Icon(
-                        Icons.home,
-                        size: 60,
-                        color: Colors.white,
-                      ),
+                    // Home Icon and Text
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.home,
+                          size: 60,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'Home',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
+                    
+                    // Add Button in Stack
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -94,19 +105,29 @@ class _HomepageState extends State<Homepage> {
                             size: 40,
                           ),
                           onPressed: () {
-                            Get.to(() =>
-                                const AddProduct()); // Example action when button is pressed
+                            Get.to(() => const AddProduct());
                           },
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 50),
-                      child: Icon(
-                        Icons.person,
-                        size: 60,
-                        color: Colors.white,
-                      ),
+                    
+                    // Profile Icon and Text
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.person,
+                          size: 60,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'Profile',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
